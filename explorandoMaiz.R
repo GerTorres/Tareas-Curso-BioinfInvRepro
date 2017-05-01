@@ -24,7 +24,7 @@ nrow(fullmat)
 estados<-c(fullmat[,5])
 estados<-as.factor(estados)
 levels(estados)
-  #de otro modo aparece la lista de nombres de estados y cuantas veces se repite cada uno
+  #de otro modo aparece la lista de nombres de estados 
 estados<-fullmat[,5]
 estados<-as.factor(estados)
 levels(estados)

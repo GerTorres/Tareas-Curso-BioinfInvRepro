@@ -1,0 +1,45 @@
+
+#PHANGORN
+## Seguí la vignette que se encuentra en "https://cran.r-project.org/web/packages/phangorn/vignettes/Trees.pdf"
+
+library(phangorn)
+
+## cargar un alineamiento 
+helobdellaAlin<-read.phyDat(file.path(fdir= "../data/sec_alin/secs_alin.fasta"), format = "fasta", type = "DNA")
+## convertir en una matriz de distanncias 
+dsMatrix<-dist.ml(helobdellaAlin)
+## arboles de distancia (UPGMA y NeighbornJoining)
+treeUPGMA<-upgma(dsMatrix)
+treeNJ<-NJ(dsMatrix)
+
+## Prueba de modelos 
+#### fit pml
+fit=pml(treeNJ, data = helobdellaAlin)
+fit
+
+#### fit GTR (este tarda un buen) para optimizar el largo de las ramas 
+
+fitGTR <- update(fit, k=4, inv=0.2)
+fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
+        rearrangement = "NNI", control = pml.control(trace = 0))
+fitGTR
+
+#### se puede hacer una prueba de varios modelos (esto tarda todavia mas!!!)
+
+MTest<- modelTest(helobdellaAlin)
+
+###### se puede elegir el mejor modelo con 
+
+bestmodel <- MTest$Model[which.min(MTest$AICc)]
+
+
+
+#### bootstrap
+bs = bootstrap.pml(fitGTR, bs=100, optNni=TRUE,
+    control = pml.control(trace = 0))
+    
+
+### plot tree con phytools
+
+plot.phylo(fitGTR$tree, type = "fan", cex = 0.35)
+

@@ -38,8 +38,9 @@ bestmodel <- MTest$Model[which.min(MTest$AICc)]
 bs = bootstrap.pml(fitGTR, bs=100, optNni=TRUE,
     control = pml.control(trace = 0))
     
+    
 
 ### plot tree con phytools
 
 plot.phylo(fitGTR$tree, type = "fan", cex = 0.35)
-
+[arbol](https://github.com/GerTorres/Tareas-Curso-BioinfInvRepro/blob/master/tree%20in%20phangorn.pdf)
